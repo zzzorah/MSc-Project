@@ -32,7 +32,6 @@ def crop(mask, seg, spacing, target_space=32):
     logging.debug(f'(max_z, min_z)={(max_z, min_z)} (max_x, min_x)={(max_x, min_x)}, (max_y, min_y)={(max_y, min_y)}, ')
     logging.debug(f'centre_index = {centre_index}')
 
-    # target_index_num = np.array([math.ceil((TARGET_SPACE / z_space)), math.ceil((TARGET_SPACE / y_space)), math.ceil((TARGET_SPACE / x_space))])
     target_index_num = np.ceil(TARGET_SPACE / spacing)
     logging.debug(f'target_indices = {target_index_num}')
 
@@ -81,12 +80,16 @@ for filename in os.listdir('dataset/seg'):
                                              origin_spacing=[row['slice_thickness'].values[0], row['vertical_pixel_spacing'].values[0], row['horizontal_pixel_spacing'].values[0]],
                                              min_spacing=[min_z_spacing, min_y_spacing, min_x_spacing],
                                              origin_shape=mask.shape)
-    cropped_mask, cropped_seg = crop(mask=resampled_mask, seg=resampled_seg, spacing=np.array([min_z_spacing, min_y_spacing, min_x_spacing]))
+    # cropped_mask, cropped_seg = crop(mask=resampled_mask, seg=resampled_seg, spacing=np.array([min_z_spacing, min_y_spacing, min_x_spacing]))
 
-    os.makedirs('dataset/cropped_resampled_mask', exist_ok=True)
-    os.makedirs('dataset/cropped_resampled_seg', exist_ok=True)
-    np.save(f'dataset/cropped_resampled_mask/{seg_series_instance_uid}', cropped_mask)
-    np.save(f'dataset/cropped_resampled_seg/{seg_series_instance_uid}', cropped_seg)
+    # os.makedirs('dataset/cropped_resampled_mask', exist_ok=True)
+    # os.makedirs('dataset/cropped_resampled_seg', exist_ok=True)
+    # np.save(f'dataset/cropped_resampled_mask/{seg_series_instance_uid}', cropped_mask)
+    # np.save(f'dataset/cropped_resampled_seg/{seg_series_instance_uid}', cropped_seg)
+    os.makedirs('dataset/resampled_mask', exist_ok=True)
+    os.makedirs('dataset/resampled_seg', exist_ok=True)
+    np.save(f'dataset/resampled_mask/{seg_series_instance_uid}', resampled_mask)
+    np.save(f'dataset/resampled_seg/{seg_series_instance_uid}', resampled_seg)
     seg_ids.append(seg_series_instance_uid)
 np.save(f'dataset/seg_ids', seg_ids)
 logging.debug('Run all files.')

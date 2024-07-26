@@ -2,7 +2,7 @@ from torch import nn
 from model.utils import conv3d_same_size, conv3d_pooling
 from model.res_net import ResidualBlock
 from model.res_cbam_layer import ResCBAMLayer
-from model.angle_linear import AngleLinear
+from model.ordinal_regression_layer import OrdinalRegressionLayer
 
 debug = True
 class ConvRes(nn.Module):
@@ -24,7 +24,7 @@ class ConvRes(nn.Module):
             layers.append(ResCBAMLayer(self.last_channel, 32//(2**i)))
         self.layers = nn.Sequential(*layers)
         self.avg_pooling = nn.AvgPool3d(kernel_size=4, stride=4)
-        self.fc = AngleLinear(in_features=self.last_channel, out_features=2)
+        self.fc = OrdinalRegressionLayer(in_features=self.last_channel, num_classes=5)
 
     def forward(self, inputs):
         if debug:

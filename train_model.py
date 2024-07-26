@@ -8,8 +8,9 @@ from model.model import ConvRes
 from dataset import LIDCIDRIDataset
 from tqdm import tqdm
 from logs.logging_config import logger_epoch_result, logger_debug
+from model.ordinal_loss import OrdinalLoss
 
-def train(epoch):
+def train(epoch=1, use_gpu=False):
     logger_debug.info(f'Start training. Epoch: {epoch}')
     model.train()
     # get_lr(epoch)
@@ -18,14 +19,15 @@ def train(epoch):
     total = 0
 
     for inputs, targets in tqdm(train_data_loader):
-        # inputs, targets = inputs.cuda(), targets.cuda()
+        if use_gpu:
+            inputs, targets = inputs.cuda(), targets.cuda()
         
         optimizer.zero_grad()
         inputs, targets = Variable(inputs), Variable(targets)
-        # inputs = inputs.unsqueeze(1)
-        logger_debug.debug(f'input shape = {inputs.shape}')
 
         outputs = model(inputs)
+        logger_debug.debug(f'outputs = {outputs}, targets = {targets}')
+        logger_debug.debug(f'outputs type = {type(outputs)}')
         loss = loss_func(outputs, targets)
 
         loss.backward()
@@ -36,8 +38,9 @@ def train(epoch):
         correct += predicted.eq(targets.data).cpu().sum()
         # progress_bar(batch_idx, len(trainloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
 
-    logger_epoch_result.info(f'Epoch: {epoch:3}, Training Accuracy: {correct.data.item() / float(total)}')
-    logger_debug.info(f'Epoch: {epoch:3}, Training Accuracy: {correct.data.item() / float(total)}')
+    logger_epoch_result.debug(f'Predict = {predicted}, Target = {targets}')
+    logger_epoch_result.info(f'Epoch: {epoch:3}, Loss: {loss}, Training Accuracy: {correct.data.item() / float(total)}')
+    logger_debug.info(f'Epoch: {epoch:3}, Loss: {loss}, Training Accuracy: {correct.data.item() / float(total)}')
 
 
 train_data_set = LIDCIDRIDataset('dataset')
@@ -49,7 +52,7 @@ model = torch.nn.DataParallel(model, device_ids=device_ids)
 print('gpu use' + str(device_ids))
 cudnn.benchmark = False  # True
 
-loss_func = nn.CrossEntropyLoss()
+loss_func = OrdinalLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.0002, betas=(0.5, 0.999))
 
-train(1)
+train(epoch=1, use_gpu=bool(len(device_ids)))

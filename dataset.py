@@ -29,9 +29,8 @@ class LIDCIDRIDataset(Dataset):
         return self.total_data_num
 
     def __getitem__(self, idx):
-        print('__getitem__')
-        mask = np.load(f'{self.root_dir}/cropped_resampled_mask/{self.sequence[idx]}.npy').astype(np.float32)
-        seg = np.load(f'{self.root_dir}/cropped_resampled_seg/{self.sequence[idx]}.npy').astype(np.float32)
+        mask = np.load(f'{self.root_dir}/resampled_mask/{self.sequence[idx]}.npy').astype(np.float32)
+        seg = np.load(f'{self.root_dir}/resampled_seg/{self.sequence[idx]}.npy').astype(np.float32)
         
         # mask = np.load(f'{self.root_dir}/mask/{self.sequence[idx]}.npy')
         # seg = np.load(f'{self.root_dir}/seg/{self.sequence[idx]}.npy')
