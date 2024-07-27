@@ -4,7 +4,7 @@ from model.res_net import ResidualBlock
 from model.res_cbam_layer import ResCBAMLayer
 from model.ordinal_regression_layer import OrdinalRegressionLayer
 
-debug = True
+debug = False
 class ConvRes(nn.Module):
     def __init__(self, config):
         super(ConvRes, self).__init__()

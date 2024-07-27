@@ -39,7 +39,7 @@ class LIDCIDRIDataset(Dataset):
         row = self.sr[self.sr['seg_id'] == self.sequence[idx]]
         features = row[['diameter', 'surface_area_of_mesh', 'subtlety_score', 'lobular_pattern', 'spiculation']].values
         label = row['malignancy'].values[0]
-        print(f'input type = {type(input)}, dtype = {input.dtype}, shape = {input.shape}') # input type = <class 'numpy.ndarray'>, dtype = float64
+
         return input, label
 
 # ids = np.load('dataset/seg_ids.npy')
