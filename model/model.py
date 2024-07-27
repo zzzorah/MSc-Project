@@ -3,6 +3,7 @@ from model.utils import conv3d_same_size, conv3d_pooling
 from model.res_net import ResidualBlock
 from model.res_cbam_layer import ResCBAMLayer
 from model.ordinal_regression_layer import OrdinalRegressionLayer
+from model.p_rank_layer import PRankLayer
 
 debug = False
 class ConvRes(nn.Module):
@@ -24,7 +25,8 @@ class ConvRes(nn.Module):
             layers.append(ResCBAMLayer(self.last_channel, 32//(2**i)))
         self.layers = nn.Sequential(*layers)
         self.avg_pooling = nn.AvgPool3d(kernel_size=4, stride=4)
-        self.fc = OrdinalRegressionLayer(in_features=self.last_channel, num_classes=5)
+        # self.fc = OrdinalRegressionLayer(in_features=self.last_channel, num_classes=5)
+        self.prank = PRankLayer(in_features=self.last_channel, num_classes=5)
 
     def forward(self, inputs):
         if debug:
@@ -43,5 +45,6 @@ class ConvRes(nn.Module):
         out = out.view(out.size(0), -1)
         if debug:
             print(out.size())
-        out = self.fc(out)
-        return out
+        # out = self.fc(out)
+        out, scores = self.prank(out)
+        return out, scores
