@@ -33,9 +33,9 @@ def train(epochs=1, use_gpu=False):
 
             # use PRank => cross entropy
             outputs, scores = model(inputs)
-            print(scores)
-            print(targets)
-            print(outputs)
+            # print(scores)
+            # print(targets)
+            # print(outputs)
             loss = loss_func(scores, targets - 1)
 
             loss.backward()
@@ -48,7 +48,7 @@ def train(epochs=1, use_gpu=False):
             correct += (outputs == targets).sum().item()
             total += targets.size(0)
 
-        logger_predict.info(f'Epoch: {epoch + 1:3} - (Predictions, targets): {outputs}, {targets}')
+            logger_predict.info(f'Epoch: {epoch + 1:3} - (Predictions, targets): {outputs}, {targets}')
         logger_epoch_result.info(f'Epoch: {epoch + 1:3}, Loss: {train_loss / total}, Training Accuracy: {correct / total}')
         # logger_debug.info(f'Epoch: {epoch + 1:3}, Loss: {train_loss / total}, Training Accuracy: {correct / total}')
 

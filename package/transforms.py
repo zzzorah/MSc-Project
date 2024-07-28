@@ -89,7 +89,7 @@ class Compose(object):
 
 class Normalize(object):
     def __init__(self):
-        ids = np.load('dataset/seg_ids.npy')
+        ids = np.load('dataset/balanced_seg_ids.npy')
         max_hu = 0
         min_hu = 3000
         count = 0

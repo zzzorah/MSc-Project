@@ -21,7 +21,7 @@ class LIDCIDRIDataset(Dataset):
         self.root_dir = root_dir
         self.transform = transform
         self.sr = sr
-        self.sequence = np.load(f'{root_dir}/seg_ids.npy')
+        self.sequence = np.load(f'{root_dir}/balanced_seg_ids.npy')
         self.total_data_num = len(self.sequence)
 
     def __len__(self):
