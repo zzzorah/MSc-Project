@@ -88,35 +88,26 @@ class Compose(object):
 
 
 class Normalize(object):
-    """Normalize an tensor image with mean and standard deviation.
+    def __init__(self):
+        ids = np.load('dataset/seg_ids.npy')
+        max_hu = 0
+        min_hu = 3000
+        count = 0
 
-    Given mean: (R, G, B) and std: (R, G, B),
-    will normalize each channel of the torch.*Tensor, i.e.
-    channel = (channel - mean) / std
+        for id in ids:
+            seg = np.load(f'dataset/cropped_resampled_seg/{id}.npy')
+            count += 1
+            max_hu = max(np.max(seg), max_hu)
+            min_hu = min(np.min(seg), min_hu)
+        print(f'(min_hu, max_hu) = {(min_hu, max_hu)}, count = {count}')
 
-    Args:
-        mean (sequence): Sequence of means for R, G, B channels respecitvely.
-        std (sequence): Sequence of standard deviations for R, G, B channels
-            respecitvely.
-    """
+        self.max_hu = max_hu
+        self.min_hu = min_hu
+        self.count = count
 
-    def __init__(self, mean, std):
-        self.mean = mean
-        self.std = std
-
-    def __call__(self, tensor):
-        """
-        Args:
-            tensor (Tensor): Tensor image of size (C, H, W) to be normalized.
-
-        Returns:
-            Tensor: Normalized image.
-        """
-        # TODO: make efficient
-        # for t, m, s in zip(tensor, self.mean, self.std):
-
-        tensor.sub_(self.mean).div_(self.std)
-        return tensor
+    def __call__(self, pixels):
+        new_pixels = (pixels - self.min_hu) / (self.max_hu - self.min_hu)
+        return new_pixels
 
 
 from scipy.ndimage.interpolation import zoom
