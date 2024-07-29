@@ -18,8 +18,8 @@ def resample(mask, seg, origin_spacing, min_spacing, origin_shape):
     logging.debug(f'original shape = {origin_shape}, resampled mask shape = {resampled_mask.shape}, resampled seg shape = {resampled_seg.shape}')
     return resampled_mask, resampled_seg
 
-def crop(mask, seg, spacing, target_space=32):
-    TARGET_SPACE = target_space
+def crop(mask, seg, target_index=32):
+    TARGET_INDEX = target_index
     max_z, max_y, max_x = (0, 0, 0)
     min_z, min_y ,min_x = mask.shape
     origin_shape = mask.shape
@@ -32,11 +32,8 @@ def crop(mask, seg, spacing, target_space=32):
     logging.debug(f'(max_z, min_z)={(max_z, min_z)} (max_x, min_x)={(max_x, min_x)}, (max_y, min_y)={(max_y, min_y)}, ')
     logging.debug(f'centre_index = {centre_index}')
 
-    target_index_num = np.ceil(TARGET_SPACE / spacing)
-    logging.debug(f'target_indices = {target_index_num}')
-
-    l_index = centre_index - np.floor((target_index_num - 1) / 2).astype(int)
-    r_index = centre_index + np.ceil((target_index_num - 1) / 2).astype(int)
+    l_index = centre_index - np.floor((TARGET_INDEX - 1) / 2).astype(int)
+    r_index = centre_index + np.ceil((TARGET_INDEX - 1) / 2).astype(int)
     logging.debug(f'[Before] l_index = {l_index}, r_index = {r_index}')
 
     for i, value in enumerate(l_index):
@@ -80,12 +77,12 @@ for filename in os.listdir('dataset/seg'):
                                              origin_spacing=[row['slice_thickness'].values[0], row['vertical_pixel_spacing'].values[0], row['horizontal_pixel_spacing'].values[0]],
                                              min_spacing=[min_z_spacing, min_y_spacing, min_x_spacing],
                                              origin_shape=mask.shape)
-    # cropped_mask, cropped_seg = crop(mask=resampled_mask, seg=resampled_seg, spacing=np.array([min_z_spacing, min_y_spacing, min_x_spacing]))
+    cropped_mask, cropped_seg = crop(mask=resampled_mask, seg=resampled_seg)
 
-    # os.makedirs('dataset/cropped_resampled_mask', exist_ok=True)
-    # os.makedirs('dataset/cropped_resampled_seg', exist_ok=True)
-    # np.save(f'dataset/cropped_resampled_mask/{seg_series_instance_uid}', cropped_mask)
-    # np.save(f'dataset/cropped_resampled_seg/{seg_series_instance_uid}', cropped_seg)
+    os.makedirs('dataset/cropped_resampled_mask', exist_ok=True)
+    os.makedirs('dataset/cropped_resampled_seg', exist_ok=True)
+    np.save(f'dataset/cropped_resampled_mask/{seg_series_instance_uid}', cropped_mask)
+    np.save(f'dataset/cropped_resampled_seg/{seg_series_instance_uid}', cropped_seg)
     os.makedirs('dataset/resampled_mask', exist_ok=True)
     os.makedirs('dataset/resampled_seg', exist_ok=True)
     np.save(f'dataset/resampled_mask/{seg_series_instance_uid}', resampled_mask)

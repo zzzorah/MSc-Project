@@ -4,11 +4,11 @@ from torch.utils.data import Dataset
 from package import transforms
 
 transform_train = transforms.Compose([
-    transforms.RandomCrop(32, padding=4),
+    # transforms.RandomCrop(32, padding=4),
     transforms.RandomHorizontalFlip(),
     transforms.RandomYFlip(),
     transforms.RandomZFlip(),
-    transforms.ZeroOut(4),
+    # transforms.ZeroOut(4),
     transforms.ToTensor(),
     transforms.Normalize(),
 ])
@@ -28,8 +28,8 @@ class LIDCIDRIDataset(Dataset):
         return self.total_data_num
 
     def __getitem__(self, idx):
-        mask = np.load(f'{self.root_dir}/resampled_mask/{self.sequence[idx]}.npy').astype(np.float32)
-        seg = np.load(f'{self.root_dir}/resampled_seg/{self.sequence[idx]}.npy').astype(np.float32)
+        mask = np.load(f'{self.root_dir}/cropped_resampled_mask/{self.sequence[idx]}.npy').astype(np.float32)
+        seg = np.load(f'{self.root_dir}/cropped_resampled_seg/{self.sequence[idx]}.npy').astype(np.float32)
         
         input = self.transform(mask * seg)
 
