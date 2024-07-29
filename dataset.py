@@ -8,7 +8,7 @@ transform_train = transforms.Compose([
     transforms.RandomHorizontalFlip(),
     transforms.RandomYFlip(),
     transforms.RandomZFlip(),
-    # transforms.ZeroOut(4),
+    transforms.ZeroOut(4),
     transforms.ToTensor(),
     transforms.Normalize(),
 ])
