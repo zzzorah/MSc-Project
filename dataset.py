@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import torch
 from torch.utils.data import Dataset
 from package import transforms
 
@@ -37,5 +38,5 @@ class LIDCIDRIDataset(Dataset):
         features = row[['diameter', 'surface_area_of_mesh', 'subtlety_score', 'lobular_pattern', 'spiculation']].values
         label = row['malignancy'].values[0]
 
-        return input, label
+        return input, torch.FloatTensor(features), label
 

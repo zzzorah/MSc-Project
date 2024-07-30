@@ -45,7 +45,7 @@ class ConvRes(nn.Module):
 
         # stage 6
         outputs = self.avg_pooling(outputs)
-        outputs = outputs.view(outputs.size(0), -1)
-        outputs = self.fc(outputs)
+        outputs = outputs.view(outputs.size(0), outputs.size(1), -1)
+        # outputs = self.fc(outputs)
 
         return outputs
