@@ -3,12 +3,14 @@ import numpy as np
 import torch
 from torch.utils.data import Dataset
 from package import transforms
+from package.misalignment_overlap import RandomMisalignmentOverlap
 
 transform_train = transforms.Compose([
     # transforms.RandomCrop(32, padding=4),
     transforms.RandomHorizontalFlip(),
     transforms.RandomYFlip(),
     transforms.RandomZFlip(),
+    RandomMisalignmentOverlap(),
     # transforms.ZeroOut(4),
     transforms.ToTensor(),
     transforms.Normalize(),
