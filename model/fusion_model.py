@@ -18,6 +18,6 @@ class FusionModel(nn.Module):
         # print(f'mlp size = {clinical_features.size()}')
         combined_features = torch.bmm(clinical_features, image_features)
         # print(f'combine size = {combined_features.size()}')
-        ouputs = combined_features.view(combined_features.size(0), -1)
-        ouputs = self.fc(ouputs)
-        return ouputs
+        outputs = combined_features.view(combined_features.size(0), -1)
+        outputs = self.fc(outputs)
+        return outputs

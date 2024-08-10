@@ -3,6 +3,7 @@ from model.utils import conv3d_same_size
 from model.ca_block import CABlock
 from model.drdb import DilatedResidualDenseBlock
 from model.angle_linear import AngleLinear
+from model.res_cbam_layer import ResCBAMLayer
 
 debug = False
 class ConvRes(nn.Module):
@@ -12,6 +13,7 @@ class ConvRes(nn.Module):
         self.conv2 = conv3d_same_size(in_channels=4, out_channels=4, kernel_size=3)
         self.config = config # [[64, 64, 64], [128, 128, 256], [256, 256, 256, 512]]
         self.last_channel = 4
+        self.cbam = ResCBAMLayer(4, 32)
         self.ca = CABlock(self.last_channel, self.last_channel)
         self.drdb = DilatedResidualDenseBlock(self.last_channel)
         self.l = 3
@@ -26,7 +28,8 @@ class ConvRes(nn.Module):
 
         # stage 2
         outputs = self.conv2(outputs)
-        outputs = self.ca(outputs)
+        # outputs = self.ca(outputs)
+        outputs = self.cbam(outputs)
 
         # stage 3 - L
         for _ in range(self.l):

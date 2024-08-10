@@ -1,6 +1,5 @@
 from torch import nn
 
-# 定義MLP模型
 class MLP(nn.Module):
     def __init__(self, input_size=5, hidden_size=64, dropout_rate=0.5, output_size=4):
         super(MLP, self).__init__()
