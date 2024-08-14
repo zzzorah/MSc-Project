@@ -2,18 +2,16 @@ import pandas as pd
 import numpy as np
 import torch
 from torch.utils.data import Dataset
-from utils import transforms
-from utils.misalignment_overlap import RandomMisalignmentOverlap
+from transforms import transforms
+import torchvision.transforms as T
 
 transform_train = transforms.Compose([
-    # transforms.RandomCrop(32, padding=4),
-    transforms.RandomHorizontalFlip(),
-    transforms.RandomYFlip(),
-    transforms.RandomZFlip(),
-    # transforms.ZeroOut(4),
     transforms.ToTensor(),
     transforms.Normalize(),
-    RandomMisalignmentOverlap(alpha=0.7),
+    T.RandomHorizontalFlip(),
+    T.RandomVerticalFlip(),
+    transforms.RandomMisalignmentOverlap(shift_x=1, shift_y=1, alpha=0.9),
+    transforms.RandomAddGaussianNoise(factor=0.05),
 ])
 
 transform_val = transforms.Compose([

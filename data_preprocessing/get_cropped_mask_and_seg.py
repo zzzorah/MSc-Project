@@ -37,7 +37,7 @@ def crop(origin_mask, ct_series_instance_uid, ct_sop_instance_uids, x_space, y_s
 
     added_num_x = math.ceil((TARGET_SPACE / x_space) - (max_x - min_x + 1))
     added_num_y = math.ceil((TARGET_SPACE / y_space) - (max_y - min_y + 1))
-    added_num_z = math.ceil((TARGET_SPACE / z_space) - (max_z - min_z + 1))#len(origin_mask))
+    added_num_z = math.ceil((TARGET_SPACE / z_space) - (max_z - min_z + 1))
     logging.debug(f'target x={math.ceil((TARGET_SPACE / x_space))} y={math.ceil((TARGET_SPACE / y_space))} z={math.ceil((TARGET_SPACE / z_space))}')
     logging.debug(f'added_num_x={added_num_x}\nadded_num_y={added_num_y}\nadded_num_z={added_num_z}')
 

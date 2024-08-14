@@ -1,3 +1,4 @@
+# Copy from https://github.com/fei-aiart/NAS-Lung?tab=readme-ov-file models/cnn_res.py
 from torch import nn
 import torch
 

@@ -13,5 +13,4 @@ class MLP(nn.Module):
         outputs = self.relu(outputs)
         outputs = self.dropout(outputs)
         outputs = self.fc2(outputs)
-        # outputs = outputs.view(outputs.size(0), -1)
         return outputs
