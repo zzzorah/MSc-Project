@@ -1,3 +1,4 @@
+# Copy from https://github.com/fei-aiart/NAS-Lung?tab=readme-ov-file models/net_sphere.py
 from torch import nn
 from torch.nn import Parameter
 from torch.autograd import Variable
